@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ReiNArhiN – Jubilaciones y Pensiones</title>
+<style>
+:root{--bg:#060d24;--surface:#0c1438;--text:#EEE9E0;--muted:#8A90A8;--accent-gold:#C9A84C;--accent-cyan:#0ABFBC;--accent-purple:#AA64FF;--accent-pink:#FF6482;--accent-blue:#6478FF;--main-gradient:linear-gradient(135deg,#9A7030,#C9A84C,#E8C97A);} 
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Segoe UI',system-ui,sans-serif;
+  font-size:1.32rem;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+a{text-decoration:none;}
+button{cursor:pointer;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:#060d24;}
+::-webkit-scrollbar-thumb{background:#9A7030;border-radius:3px;}
+
+/* ── CANVAS (particles) ── */
+#particles{
+  position:fixed;inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem 2.2rem;
+  background:rgba(6,13,36,.82);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(201,168,76,.1);
+  transition:background .4s,border-color .4s;
+}
+nav.scrolled{
+  background:rgba(6,13,36,.97);
+  border-color:rgba(201,168,76,.28);
+}
+.logo-main{
+  font-family:Georgia,serif;
+  font-size:1.704rem;font-weight:700;
+  background:linear-gradient(90deg,#C9A84C,#E8C97A,#0ABFBC);
+  background-clip: text; -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:.5px;
+}
+.logo-sub{
+  font-size:.576rem;letter-spacing:3.5px;
+  color:#596080;text-transform:uppercase;margin-top:1px;
+}
+.nav-links{display:flex;gap:1.4rem;align-items:center;list-style:none;}
+.nav-links a{
+  color:#8A90A8;font-size:.864rem;
+  letter-spacing:1.5px;text-transform:uppercase;font-weight:600;
+  transition:color .2s;
+}
+.nav-links a:hover{color:#C9A84C;}
+.btn-nav{
+  background:linear-gradient(135deg,#9A7030,#C9A84C,#E8C97A);
+  color:#060d24!important;
+  font-size:.852rem;font-weight:700;letter-spacing:1px;
+  padding:.44rem 1.15rem;border-radius:30px;
+  box-shadow:0 2px 16px #C9A84C44;
+  transition:box-shadow .25s,transform .2s;
+}
+.btn-nav:hover{box-shadow:0 4px 28px #C9A84C66;transform:translateY(-1px);}
+
+/* ── HERO ── */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:8rem 2rem 5rem;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% -5%,rgba(10,191,188,.10) 0%,transparent 55%),
+    radial-gradient(ellipse 55% 40% at 95% 90%,rgba(201,168,76,.09) 0%,transparent 55%);
+}
+.orb{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle,var(--c),transparent 70%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(10,191,188,.08);
+  border:1px solid rgba(10,191,188,.30);
+  color:#12D9D6;font-size:.864rem;letter-spacing:2.5px;
+  text-transform:uppercase;font-weight:700;
+  padding:.4rem 1.15rem;border-radius:30px;
+  margin-bottom:2rem;
+  animation:fadeD .8s both;
+}
+.badge-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:#12D9D6;box-shadow:0 0 8px #12D9D6;
+  animation:blink 1.4s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{
+  font-family:Georgia,serif;
+  font-size:clamp(2.88rem,6vw,6rem);
+  font-weight:700;line-height:1.08;
+  margin-bottom:1.3rem;
+  animation:fadeD .9s .1s both;
+}
+.hero h1 span{
+  background:linear-gradient(135deg,#C9A84C,#E8C97A 40%,#0ABFBC);
+  background-clip:text;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero p{
+  width:100%;
+  max-width:min(760px,90vw);
+  font-size:1.728rem;
+  color:#8A90A8;line-height:1.82;
+  margin:0 auto 2.6rem;
+  animation:fadeD 1s .2s both;
+}
+.hero-btns{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  justify-content:center;
+  animation:fadeD 1s .35s both;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#9A7030,#C9A84C,#E8C97A);
+  color:#060d24;font-weight:700;
+  font-size:1.008rem;letter-spacing:1px;
+  padding:.88rem 2.3rem;border-radius:50px;
+  box-shadow:0 4px 32px #C9A84C44;
+  transition:transform .25s,box-shadow .25s;
+  border:none;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 40px #C9A84C66;}
+.btn-ghost{
+  border:1.5px solid rgba(201,168,76,.38);
+  color:#E8C97A;font-weight:600;
+  font-size:1.008rem;padding:.88rem 2.3rem;
+  border-radius:50px;background:transparent;
+  transition:background .25s;
+}
+.btn-ghost:hover{background:rgba(201,168,76,.08);}
+.hero-stats{
+  display:flex;gap:3.5rem;margin-top:4.5rem;
+  flex-wrap:wrap;justify-content:center;
+  animation:fadeD 1s .5s both;
+}
+.stat-num{
+  font-size:2.4rem;font-weight:900;
+  background:linear-gradient(135deg,#C9A84C,#0ABFBC);
+  background-clip: text; -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.stat-label{
+  font-size:.864rem;letter-spacing:2px;
+  text-transform:uppercase;color:#596080;margin-top:4px;
+}
+
+/* ── INFO STRIP ── */
+.info-strip{
+  position:relative;z-index:1;
+  background:linear-gradient(135deg,#0c1438,#101c4a);
+  border-top:1px solid rgba(201,168,76,.1);
+  border-bottom:1px solid rgba(201,168,76,.1);
+}
+.info-strip-inner{
+  max-width:1080px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:2rem;padding:3rem 2rem;
+}
+.info-block{text-align:center;padding:.5rem;}
+.info-icon{font-size:2.04rem;margin-bottom:.6rem;}
+.info-title{font-size:1.056rem;font-weight:700;margin-bottom:.3rem;}
+.info-text{font-size:1.0656rem;color:#8A90A8;line-height:1.65;}
+
+/* ── SECTIONS ── */
+.section{position:relative;z-index:1;padding:5rem 2rem;}
+.section-dark{
+  background:linear-gradient(180deg,#060d24 0%,#0c1438 100%);
+}
+.section-header{text-align:center;margin-bottom:3rem;}
+.section-tag{
+  font-size:.864rem;letter-spacing:3px;
+  text-transform:uppercase;color:#0ABFBC;
+  font-weight:700;margin-bottom:.6rem;
+}
+.section-title{
+  font-family:Georgia,serif;
+  font-size:clamp(2.04rem,3.5vw,3.36rem);
+  font-weight:700;margin-bottom:1.5rem;
+}
+.section-title span{
+  background:linear-gradient(135deg,#C9A84C,#E8C97A);
+  background-clip:text;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.section-desc{
+  max-width:520px;margin:.8rem auto 0;
+  color:#8A90A8;font-size:1.056rem;line-height:1.7;
+}
+
+/* ── TABS ── */
+.tabs{
+  display:inline-flex;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:40px;padding:.28rem;gap:.15rem;
+}
+.tab-btn{
+  border:none;padding:.55rem 1.5rem;
+  border-radius:35px;font-size:1.1232rem;font-weight:700;
+  background:transparent;color:#8A90A8;
+  transition:all .3s;
+}
+.tab-btn.active{
+  background:linear-gradient(135deg,#9A7030,#C9A84C,#E8C97A);
+  color:#060d24;box-shadow:0 2px 16px #C9A84C44;
+}
+
+/* ── JUB CARDS ── */
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(265px,1fr));
+  gap:1.3rem;max-width:1160px;margin:0 auto;
+}
+.jub-card{
+  background:rgba(12,18,50,.88);
+  border:1px solid rgba(201,168,76,.08);
+  border-radius:18px;padding:1.8rem;
+  cursor:pointer;
+  transition:transform .32s,border-color .32s,box-shadow .32s;
+  position:relative;overflow:hidden;
+}
+.jub-card:hover{
+  transform:translateY(-7px);
+  box-shadow:0 16px 48px #00000055;
+}
+.card-top-line{
+  position:absolute;top:0;left:0;right:0;height:2px;
+  opacity:0;transition:opacity .3s;
+}
+.jub-card:hover .card-top-line{opacity:1;}
+.card-icon-box{
+  width:50px;height:50px;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.62rem;margin-bottom:1.1rem;
+}
+.card-title{font-size:1.176rem;font-weight:700;margin-bottom:.45rem;}
+.card-desc{font-size:1.1232rem;color:#8A90A8;line-height:1.65;margin-bottom:1.1rem;}
+.card-link{font-size:1.008rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+
+/* ── PENSION CARDS ── */
+.pen-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(245px,1fr));
+  gap:1.2rem;max-width:1100px;margin:0 auto;
+}
+.pen-card{
+  background:linear-gradient(135deg,rgba(12,18,50,.92),rgba(16,26,72,.75));
+  border:1px solid rgba(10,191,188,.13);
+  border-radius:16px;padding:1.6rem;
+  cursor:pointer;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+.pen-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(10,191,188,.50);
+  box-shadow:0 10px 32px rgba(10,191,188,.14);
+}
+.pen-icon{font-size:2.016rem;margin-bottom:.5rem;}
+.pen-title{font-size:1.116rem;font-weight:700;color:#12D9D6;margin-bottom:.42rem;}
+.pen-desc{font-size:1.0944rem;color:#8A90A8;line-height:1.6;margin-bottom:.9rem;}
+.pen-badge{
+  display:inline-flex;align-items:center;
+  background:rgba(10,191,188,.09);
+  border:1px solid rgba(10,191,188,.22);
+  color:#12D9D6;font-size:.9648rem;font-weight:700;
+  letter-spacing:1px;padding:.27rem .78rem;border-radius:20px;
+}
+
+/* ── SOFTWARE HIGHLIGHT ── */
+.sw-box{
+  background:linear-gradient(135deg,rgba(170,100,255,.08),rgba(201,168,76,.07));
+  border:1px solid rgba(170,100,255,.22);
+  border-radius:22px;padding:2.8rem 2.5rem;
+  max-width:1100px;margin:0 auto;
+  position:relative;overflow:hidden;
+}
+.sw-inner{
+  display:flex;flex-wrap:wrap;
+  gap:2rem;align-items:center;justify-content:space-between;
+}
+.sw-text{flex:1;min-width:260px;}
+.sw-tag{font-size:.8352rem;letter-spacing:3px;text-transform:uppercase;color:#AA64FF;font-weight:700;margin-bottom:.5rem;}
+.sw-title{font-family:Georgia,serif;font-size:1.92rem;font-weight:700;margin-bottom:.8rem;}
+.sw-title span{
+  background:linear-gradient(135deg,#C9A84C,#E8C97A);
+  background-clip: text; -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.sw-desc{font-size:1.1952rem;color:#8A90A8;line-height:1.75;}
+.sw-feats{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:.8rem;flex:1;min-width:280px;
+}
+.sw-feat{
+  background:rgba(0,0,0,.25);border-radius:12px;
+  padding:1rem;border:1px solid rgba(170,100,255,.15);
+}
+.sw-feat-icon{font-size:1.728rem;}
+.sw-feat-title{font-size:1.152rem;font-weight:700;color:#E8C97A;margin:.3rem 0 .2rem;}
+.sw-feat-desc{font-size:1.008rem;color:#8A90A8;line-height:1.5;}
+
+/* ── STEPS ── */
+.steps-wrap{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:1.1rem;}
+.step-item{
+  display:flex;align-items:flex-start;gap:1.4rem;
+  background:rgba(12,18,50,.85);
+  border:1px solid rgba(201,168,76,.09);
+  border-radius:16px;padding:1.5rem;
+  transition:border-color .3s;
+}
+.step-item:hover{border-color:rgba(201,168,76,.3);}
+.step-num{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#9A7030,#C9A84C);
+  color:#060d24;font-weight:900;font-size:1.32rem;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;box-shadow:0 2px 16px #C9A84C44;
+}
+.step-title{font-size:1.128rem;font-weight:700;margin-bottom:.32rem;}
+.step-desc{font-size:1.152rem;color:#8A90A8;line-height:1.65;}
+
+/* ── CTA BANNER ── */
+.cta-box{
+  background:linear-gradient(135deg,rgba(10,191,188,.09),rgba(201,168,76,.07));
+  border:1px solid rgba(201,168,76,.18);
+  border-radius:26px;max-width:860px;
+  margin:0 auto;padding:3.8rem 2.5rem;
+  text-align:center;position:relative;overflow:hidden;
+}
+.cta-top-line{
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,#C9A84C,#0ABFBC,transparent);
+}
+.cta-emoji{font-size:3rem;margin-bottom:1rem;}
+.cta-title{font-family:Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.88rem);margin-bottom:.9rem;}
+.cta-title span{
+  background:linear-gradient(135deg,#C9A84C,#0ABFBC);
+  background-clip:text;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.cta-desc{color:#8A90A8;font-size:1.296rem;line-height:1.78;max-width:520px;margin:0 auto 2.2rem;}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+/* ── CONTACT BUTTONS ── */
+.contact-section{margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(201,168,76,.15);}
+.contact-title{font-size:1.296rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#C9A84C;margin-bottom:1.5rem;}
+.contact-btns{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-top:1.2rem;}
+.contact-btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:1rem 1.8rem;border-radius:50px;border:none;font-weight:700;font-size:1.1808rem;letter-spacing:.8px;text-transform:uppercase;transition:transform .25s,box-shadow .25s,background .25s;text-decoration:none;}
+.contact-btn:hover{transform:translateY(-3px);}
+.contact-btn svg{width:20px;height:20px;}
+.contact-btn.whatsapp{background:linear-gradient(135deg,#25D366,#20BA5A);color:#fff;box-shadow:0 4px 20px rgba(37,211,102,.3);}
+.contact-btn.whatsapp:hover{background:linear-gradient(135deg,#20BA5A,#1a8c4a);box-shadow:0 6px 28px rgba(37,211,102,.4);}
+.contact-btn.email{background:linear-gradient(135deg,#EA4335,#C5221F);color:#fff;box-shadow:0 4px 20px rgba(234,67,53,.3);}
+.contact-btn.email:hover{background:linear-gradient(135deg,#C5221F,#9C0E0E);box-shadow:0 6px 28px rgba(234,67,53,.4);}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  background:rgba(2,5,16,.97);
+  border-top:1px solid rgba(201,168,76,.1);
+  padding:3rem 2rem 2rem;text-align:center;
+}
+.footer-logo{
+  font-family:Georgia,serif;font-size:2.016rem;font-weight:700;
+  background:linear-gradient(90deg,#C9A84C,#E8C97A,#0ABFBC);
+  background-clip:text;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:.3rem;
+}
+.footer-sub{font-size:.72rem;letter-spacing:3.5px;text-transform:uppercase;color:#596080;}
+.footer-links{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin:1.6rem 0;list-style:none;}
+.footer-links a{color:#596080;font-size:1.0656rem;letter-spacing:1px;transition:color .2s;}
+.footer-links a:hover{color:#C9A84C;}
+.footer-copy{
+  font-size:.936rem;color:rgba(89,96,128,.4);
+  border-top:1px solid rgba(255,255,255,.04);
+  padding-top:1.1rem;
+}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:400;
+  background:rgba(2,5,18,.92);
+  backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{
+  background:linear-gradient(150deg,#0e1535,#0a1228);
+  border-radius:24px;
+  max-width:640px;width:100%;
+  max-height:88vh;overflow-y:auto;
+  padding:2.4rem;position:relative;
+  transform:translateY(30px) scale(.97);
+  transition:transform .35s;
+}
+.modal-overlay.open .modal-box{transform:translateY(0) scale(1);}
+.modal-close{
+  position:absolute;top:1.1rem;right:1.3rem;
+  background:#ffffff;border:none;
+  color:#060d24;font-size:1.728rem;
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+  cursor:pointer;
+}
+.modal-close:hover{background:#f0f0f0;}
+.modal-top-line{
+  position:absolute;top:0;left:0;right:0;height:3px;
+  border-radius:24px 24px 0 0;
+}
+.modal-tag{font-size:.8352rem;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin-bottom:.4rem;}
+.modal-head{display:flex;align-items:center;gap:.8rem;margin-bottom:1.4rem;}
+.modal-emoji{font-size:2.4rem;}
+.modal-title{font-family:Georgia,serif;font-size:2.088rem;font-weight:700;line-height:1.2;}
+.modal-section-label{font-size:.9072rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;margin-bottom:.55rem;}
+.modal-section{margin-bottom:1.1rem;}
+.modal-item{display:flex;align-items:flex-start;gap:.55rem;margin-bottom:.38rem;}
+.modal-diamond{font-size:.648rem;margin-top:8px;flex-shrink:0;}
+.modal-item-text{font-size:1.1808rem;color:#b8c0d8;line-height:1.65;}
+
+/* ── FADE IN ANIMATION ── */
+@keyframes fadeD{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{
+  opacity:0;transform:translateY(28px);
+  transition:opacity .7s,transform .7s;
+}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+/* ── TABS PANELS ── */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:680px){
+  nav{padding:.75rem 1rem;}
+  .nav-links{gap:.8rem;}
+  .nav-links li:not(:last-child){display:none;}
+  .hero{padding:6rem 1.2rem 4rem;}
+  .section{padding:3.5rem 1.2rem;}
+  .sw-feats{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- CANVAS PARTÍCULAS -->
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div>
+    <div class="logo-main">ReiNArhiN</div>
+    <div class="logo-sub">Jubilaciones &amp; Pensiones</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#contacto" class="btn-nav">Consultar</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="orb" style="--c:rgba(201,168,76,.06);width:260px;height:260px;top:18%;left:8%;"></div>
+  <div class="orb" style="--c:rgba(10,191,188,.05);width:340px;height:340px;top:55%;right:6%;"></div>
+  <div class="orb" style="--c:rgba(170,100,255,.05);width:200px;height:200px;bottom:10%;left:20%;"></div>
+
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    SJI · Asesoramiento Previsional Experto
+  </div>
+
+  <h1>Tu jubilación,<br/><span>con respaldo experto</span></h1>
+
+  <p>Calculamos tu haber, evaluamos todas las leyes previsionales y te acompañamos en cada paso — desde verificar tus aportes hasta cobrar el beneficio correcto.</p>
+
+  <div class="hero-btns">
+    <a href="#servicios" class="btn-primary">Ver todos los servicios</a>
+    <a href="#proceso" class="btn-ghost">¿Cómo empezar? →</a>
+  </div>
+
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">8+</div>
+      <div class="stat-label">Regímenes cubiertos</div>
+    </div>
+    <div>
+      <div class="stat-num">Sistema</div>
+      <div class="stat-label">Jauregui integrado</div>
+    </div>
+    <div>
+      <div class="stat-num">30 años</div>
+      <div class="stat-label">o moratoria disponible</div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-strip-inner">
+    <div class="info-block">
+      <div class="info-icon">⚖️</div>
+      <div class="info-title">Derecho Jubilatorio</div>
+      <div class="info-text">Evaluamos bajo todas las leyes previsionales vigentes e históricas.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-icon">🧮</div>
+      <div class="info-title">Cálculo de Haber</div>
+      <div class="info-text">Prevemos, controlamos liquidaciones y gestionamos reajustes judiciales.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-icon">📋</div>
+      <div class="info-title">Gestión Integral</div>
+      <div class="info-text">Moratorias, tareas de cuidado, actividades especiales: de inicio a fin.</div>
+    </div>
+    <div class="info-block">
+      <div class="info-icon">🛡️</div>
+      <div class="info-title">Defensa Judicial</div>
+      <div class="info-text">Demandas de reajuste, ejecuciones de sentencia, reconocimiento de servicios.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<div class="section" id="servicios">
+  <div class="section-header">
+    <div class="section-tag">Nuestros servicios</div>
+    <h2 class="section-title">Encontrá tu <span>régimen</span></h2>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('jub',this)">🏅 Jubilaciones</button>
+      <button class="tab-btn" onclick="switchTab('pen',this)">💙 Pensiones</button>
+    </div>
+  </div>
+
+  <!-- JUB PANEL -->
+  <div class="tab-panel active" id="panel-jub">
+    <div class="cards-grid" id="jub-grid"></div>
+  </div>
+
+  <!-- PEN PANEL -->
+  <div class="tab-panel" id="panel-pen">
+    <div class="pen-grid" id="pen-grid"></div>
+  </div>
+</div>
+
+<!-- SOFTWARE JAUREGUI -->
+<div class="section" style="padding-top:0;">
+  <div class="sw-box fade-in">
+    <div class="sw-inner">
+      <div class="sw-text">
+        <div class="sw-tag">Herramienta profesional</div>
+        <h3 class="sw-title">SJI</h3>
+        <p class="sw-desc">Software de cálculo especializado para determinar derecho jubilatorio, calcular haberes bajo Leyes 18.037/38 y 24.241, y confeccionar demandas de reajuste con actualizaciones e intereses.</p>
+      </div>
+      <div class="sw-feats">
+        <div class="sw-feat"><div class="sw-feat-icon">🔍</div><div class="sw-feat-title">Derecho Jub.</div><div class="sw-feat-desc">Todas las leyes y regímenes especiales</div></div>
+        <div class="sw-feat"><div class="sw-feat-icon">💰</div><div class="sw-feat-title">Haber 24.241</div><div class="sw-feat-desc">Cálculo, control y reajuste judicial</div></div>
+        <div class="sw-feat"><div class="sw-feat-icon">📊</div><div class="sw-feat-title">Haber 18.037/8</div><div class="sw-feat-desc">Inconstitucionalidad y diferencias</div></div>
+        <div class="sw-feat"><div class="sw-feat-icon">⚡</div><div class="sw-feat-title">Software</div><div class="sw-feat-desc">Resultados precisos en minutos</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESO -->
+<div class="section section-dark" id="proceso">
+  <div class="section-header fade-in">
+    <div class="section-tag">Cómo iniciamos</div>
+    <h2 class="section-title">Tu camino hacia la <span>Jubilación</span></h2>
+  </div>
+  <div class="steps-wrap">
+    <div class="step-item fade-in">
+      <div class="step-num">1</div>
+      <div><div class="step-title">Verificamos tu historia laboral</div><div class="step-desc">Analizamos y Revisamos todos tus aportes en Trabajo → Consultamos tu Historia Laboral. Identificamos y corregimos inconsistencias.</div></div>
+    </div>
+    <div class="step-item fade-in">
+      <div class="step-num">2</div>
+      <div><div class="step-title">Analizamos tu situación</div><div class="step-desc">Determinamos bajo qué ley podés jubilarte y cuál es la mejor estrategia: moratoria, tareas de cuidado, aportes autónomos o reconocimiento de servicios.</div></div>
+    </div>
+    <div class="step-item fade-in">
+      <div class="step-num">3</div>
+      <div><div class="step-title">Reunís la documentación</div><div class="step-desc">DNI, certificaciones de servicios, recibos de sueldo, partidas de nacimiento si aplica y formulario PS 6.18. Te decimos exactamente qué necesitás.</div></div>
+    </div>
+    <div class="step-item fade-in">
+      <div class="step-num">4</div>
+      <div><div class="step-title">Iniciás el trámite</div><div class="step-desc">Controlamos que el haber liquidado sea el correcto y gestionamos reajustes si corresponde.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="section" id="contacto">
+  <div class="cta-box fade-in">
+    <div class="cta-top-line"></div>
+    <div class="cta-emoji">✨</div>
+    <h2 class="cta-title">¿Listo para el <span>primer paso</span>?</h2>
+    <p class="cta-desc">Analizamos tu caso de forma personalizada. Te decimos exactamente qué régimen aplica, qué documentación necesitás y cuánto podés cobrar.</p>
+    <div class="cta-btns">
+      <a href="#" onclick="openAargCalculator(event)" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;margin-right:8px;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 4l-7 4.5L5 7V5l7 4.5L19 5v2zm0 12H5V9l7 4.5L19 9v10z"/></svg>
+        Calculadora AARG 2026
+      </a>
+      <button class="btn-ghost" onclick="document.getElementById('servicios').scrollIntoView({behavior:'smooth'})">Ver todos los regímenes</button>
+    </div>
+    <div class="contact-section">
+      <div class="contact-title">Solicita tu turno</div>
+      <div class="contact-btns">
+        <a href="https://wa.me/5493815696261?text=Hola%20ReiNArhiN,%20me%20gustaría%20solicitar%20un%20turno%20para%20asesoramiento%20de%20jubilación" target="_blank" class="contact-btn whatsapp">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-.355.228-.67.499-.923.816L1.97 3.368a9.746 9.746 0 0113.255-1.423c3.476 2.286 5.048 6.874 3.958 10.975l1.414 1.414c.38-.63.712-1.297.982-1.993a9.9 9.9 0 001.414-5.973c0-5.471-4.429-9.9-9.9-9.9z"/></svg>
+          WhatsApp
+        </a>
+        <a href="mailto:arhinsingh05@gmail.com" class="contact-btn email">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ReiNArhiN</div>
+  <div class="footer-sub">Jubilaciones &amp; Pensiones · Asesoramiento Previsional Profesional</div>
+  <ul class="footer-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#contacto">Consultas</a></li>
+    <li><a href="https://www.anses.gob.ar" target="_blank">ANSES Oficial</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 ReiNArhiN – Jubilaciones y Pensiones · Sitio informativo. No reemplaza asesoramiento profesional individual.</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-top-line" id="modalTopLine"></div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-tag" id="modalTag"></div>
+    <div class="modal-head">
+      <span class="modal-emoji" id="modalEmoji"></span>
+      <div class="modal-title" id="modalTitle"></div>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+const MODAL_DATA = {
+  dep:{tag:"Régimen General",icon:"💼",color:"#C9A84C",title:"Jubilación en Relación de Dependencia",
+    reqs:["60 años si sos mujer / 65 años si sos varón","30 años de aportes registrados en el SIPA","Si faltan aportes: 1 año reconocido por cada 2 de edad excedente","Complementar con aportes autónomos o monotributistas","Completar mediante moratorias previsionales vigentes"],
+    docs:["DNI original","Formulario PS 6.18","Certificaciones de servicios si hay aportes sin registrar","Reconocimiento de Servicios si la empresa cerró"],
+    legal:["Ley 24.241 (ceses desde 1994)","Ley 18.037 / 18.038 (ceses hasta 1994)"]},
+  aut:{tag:"Autónomos / Monotributistas",icon:"🧾",color:"#0ABFBC",title:"Jubilación para Trabajadores Independientes",
+    reqs:["60 años (mujer) / 65 años (varón)","30 años de aportes","Consultar historia laboral en mi ANSES y SICAM de ARCA","Inscripción a regularización voluntaria si faltan aportes","Moratoria disponible al iniciar el trámite en ANSES"],
+    docs:["DNI original","Formulario PS 6.18","Constancias de aportes ARCA (ex AFIP)"],
+    legal:["Ley 24.241","Leyes 24.476 y 26.970 (moratorias)"]},
+  agr:{tag:"Actividad Agraria",icon:"🌾",color:"#32C882",title:"Jubilación Trabajador Agrario",
+    reqs:["57 años de edad, sin distinción de sexo","25 años de servicios con aportes en actividad agraria","Incluye: manipulación de cereales, ferias de hacienda, empaque de frutos, cosecha","Actividades cíclicas agrarias dentro de proceso temporal definido"],
+    docs:["DNI original","Certificaciones de servicios de empleadores","Recibos de sueldo o comprobantes de obra social como prueba alternativa"],
+    legal:["Ley 24.241 – Régimen Agrario","Decreto N° 301/13"]},
+  doc:{tag:"Régimen Especial Docente",icon:"📚",color:"#6478FF",title:"Jubilación Docente y Docente de Frontera",
+    reqs:["Hombres: 60 años / Mujeres: 57 años (docentes comunes)","30 años de servicios (se reducen a 25 si 10 fueron al frente de alumnos)","Escuelas desfavorables o especiales: 4 años por cada 3 efectivos","Docentes de frontera (Dec-Ley 19.524): SIN límite de edad, 25 años al frente de alumnos"],
+    docs:["DNI original","Certificaciones de servicios de los establecimientos","Documentación de ubicación de escuela y frente de alumnos"],
+    legal:["Ley 24.016","Decreto-Ley 19.524/72"]},
+  mor:{tag:"Moratorias",icon:"📄",color:"#AA64FF",title:"Moratorias Previsionales",
+    reqs:["Regularizar períodos no aportados para completar 30 años","El pago puede descontarse del haber jubilatorio mensual","Compatible con tareas de cuidado y otros aportes","Inscripción a través de ARCA (ex AFIP) o al inicio del trámite en ANSES"],
+    docs:["DNI original","Formulario PS 6.18","Constancias de ARCA sobre períodos a regularizar"],
+    legal:["Ley 24.476 (períodos hasta 1993)","Ley 26.970 (períodos 1993–2003)"]},
+  cui:{tag:"Tareas de Cuidado",icon:"👩‍👧",color:"#FF6482",title:"Reconocimiento de Aportes por Tareas de Cuidado",
+    reqs:["Mujeres de 60 años o más sin aportes suficientes","Sin jubilación ya otorgada o en trámite","1 año de aportes por hijo biológico","2 años por hijo adoptado","Año adicional por hijo con discapacidad o beneficiario de AUH por ≥12 meses","También se reconocen licencias por maternidad y excedencia"],
+    docs:["DNI","Partidas de nacimiento de los hijos","CUD si hay hijos con discapacidad","Sentencia de adopción si aplica"],
+    legal:["Ley 24.241","Decreto 868/2021"]},
+  esp:{tag:"Actividades Especiales",icon:"⚓",color:"#F0A500",title:"Regímenes de Actividades Especiales",
+    reqs:["Personal embarcado y aeronavegantes","Estibadores portuarios y capataces","Trabajo de temporada","Productores de seguros","Requisitos diferenciados de edad y aportes según la actividad"],
+    docs:["DNI original","Certificaciones específicas de la actividad","Acreditación de tareas especiales, riesgosas o insalubres"],
+    legal:["Ley 24.241","Ley 20.475 (minusválidos)","Ley 25.362 (sector público anticipada)"]},
+  prov:{tag:"Cajas Provinciales",icon:"🏛️",color:"#0ABFBC",title:"Regímenes Provinciales y Municipales",
+    reqs:["13 provincias con caja propia: Bs.As.(IPS), Córdoba, Chaco, Chubut, Corrientes, Entre Ríos, Formosa, La Pampa, Misiones, Neuquén, Santa Cruz, Santa Fe, Tierra del Fuego","10 provincias + CABA transferidas a ANSES (1994–1997)","26 regímenes municipales en todo el país","76 cajas para profesionales – Coordinadora Nacional"],
+    docs:["DNI original","Documentación específica de cada organismo provincial","Formularios propios de cada caja"],
+    legal:["Normativa de cada provincia"]},
+  p_inv:{tag:"Pensión No Contributiva",icon:"♿",color:"#C9A84C",title:"Pensión por Invalidez Laboral",
+    reqs:["Incapacidad laboral del 66% o más (CMO de hospital público)","Hasta 65 años de edad","Argentino nativo/naturalizado residente; extranjeros: 10 años de residencia","No cobrar jubilación ni pensión","Incompatible con relación laboral dependiente, autónoma o monotributista general"],
+    docs:["DNI","CMO (Certificado Médico Oficial)","Informe catastral para residentes en provincias específicas"],
+    legal:["Monto: 70% de jubilación mínima"]},
+  p_vej:{tag:"Pensión No Contributiva",icon:"👴",color:"#6478FF",title:"Pensión por Vejez",
+    reqs:["70 años o más","Argentino nativo o naturalizado (5 años de residencia previa)","Extranjeros: 40 años de residencia previa","No cobrar jubilación ni pensión contributiva o no contributiva","Sin bienes o recursos suficientes para subsistencia"],
+    docs:["DNI original y copia","Formulario PS 6.18 (OTRAS → Prestación por Vejez)"],
+    legal:["Monto: 70% de jubilación mínima"]},
+  p_mad:{tag:"Pensión No Contributiva",icon:"👩‍👧‍👦",color:"#FF6482",title:"Pensión Madre de 7 Hijos",
+    reqs:["7 o más hijos (incluidos adoptados), sin importar edad ni estado civil","Argentina o naturalizada (mín. 1 año en el país); extranjeras: 15 años","No ser titular de otra jubilación o pensión","No cobrar AUH, Asignación Familiar por Hijo ni Asignación por Embarazo"],
+    docs:["DNI original y copia","Formulario PS 6.18 (OTRAS → Pensión Madre 7 hijos)"],
+    legal:["Monto: 1 haber mínimo mensual (prestación vitalicia)"]},
+  puam:{tag:"PUAM",icon:"🌟",color:"#F0A500",title:"Pensión Universal para el Adulto Mayor",
+    reqs:["65 años o más","Argentino con 10 años de residencia; extranjero con 20 años (10 inmediatos)","No cobrar ni tener derecho a jubilación o pensión (podés renunciar)","Residir en el país – ausencias máximas de 90 días corridos"],
+    docs:["CUIL y Clave de Seguridad Social","Trámite 100% digital en mi ANSES"],
+    legal:["Monto: 80% de jubilación mínima con movilidad + PAMI"]},
+  p_vih:{tag:"Ley 27.675",icon:"🏥",color:"#32C882",title:"Pensión VIH / Hepatitis B y C",
+    reqs:["18 años o más y residir en el país","Naturalizados/extranjeros: 5 años de residencia continua","Diagnóstico acreditado en Sistema Nacional de Vigilancia de Salud","Ingresos propios ≤ SMVM; ingresos grupales ≤ 3 SMVM"],
+    docs:["DNI","Declaración jurada autorizando cesión de datos de diagnóstico al Min. de Salud"],
+    legal:["Monto: 70% de jubilación mínima"]},
+  p_mal:{tag:"Pensión Honorífica",icon:"🎖️",color:"#AA64FF",title:"Pensión Veteranos de Malvinas",
+    reqs:["Ex soldados conscriptos combatientes del Atlántico Sur","Civiles en zona de operaciones (TOM / TOAS)","Oficiales y Suboficiales retirados destinados al área de combate","En caso de fallecimiento: cónyuge, conviviente, hijos menores o con discapacidad"],
+    docs:["Certificado Único de Veteranos de Guerra (TAD – Ministerio de Defensa)","Certificado de antecedentes penales (validez 5 días)","Formulario DDJJ PS 6.284"],
+    legal:["Ley especial – Haber diferenciado según situación"]},
+  p_pol:{tag:"Pensión Graciable",icon:"✊",color:"#0ABFBC",title:"Pensión Ex Presos Políticos – Ley 26.913",
+    reqs:["Detención por causas políticas, gremiales o estudiantiles hasta el 10/12/1983","No cobrar otra prestación no contributiva (podés optar por una)","Compatible con cualquier otro ingreso monetario","Sin plazos máximos: delitos de lesa humanidad"],
+    docs:["DNI original y copia","Formulario PS 6.298","Documentación del Ministerio de Defensa, resoluciones o constancias judiciales"],
+    legal:["Ley 26.913"]},
+  p_cov:{tag:"Pensión Especial COVID",icon:"🦠",color:"#C9A84C",title:"Pensión Familiares de Trabajadores COVID-19",
+    reqs:["Trabajador esencial fallecido entre el 1/3/2020 y el 30/9/2020 por COVID-19","Sectores: salud, FFAA, seguridad, aduana, migraciones, bomberos, residuos","Cónyuge/conviviente (5 años de convivencia o 2 con hijos)","Hijos hasta 21 años, o hasta 25 con alimentos al momento del fallecimiento"],
+    docs:["Certificado de defunción con causa COVID-19","Constancia del empleador de tareas presenciales en el período"],
+    legal:["Ley 27.549 – Monto: 2 haberes mínimos"]},
+};
+
+const JUB_CARDS = [
+  {key:"dep",icon:"💼",accent:"#C9A84C",title:"Relación de Dependencia",desc:"Para empleados en relación de dependencia bajo Leyes 24.241 y 18.037/38."},
+  {key:"aut",icon:"🧾",accent:"#0ABFBC",title:"Autónomos y Monotributistas",desc:"Régimen para trabajadores independientes con opción a moratorias."},
+  {key:"agr",icon:"🌾",accent:"#32C882",title:"Trabajador Agrario",desc:"57 años con 25 de aportes en actividad agropecuaria."},
+  {key:"doc",icon:"📚",accent:"#6478FF",title:"Docentes y Frontera",desc:"Regímenes especiales con beneficios de edad para docentes."},
+  {key:"mor",icon:"📄",accent:"#AA64FF",title:"Moratorias Previsionales",desc:"Leyes 24.476 y 26.970 para regularizar aportes faltantes."},
+  {key:"cui",icon:"👩‍👧",accent:"#FF6482",title:"Tareas de Cuidado",desc:"1 año de aportes reconocido por hijo para completar requisitos."},
+  {key:"esp",icon:"⚓",accent:"#F0A500",title:"Actividades Especiales",desc:"Embarcados, aeronavegantes, estibadores, capataces y más."},
+  {key:"prov",icon:"🏛️",accent:"#0ABFBC",title:"Cajas Provinciales (IPS)",desc:"Regímenes de las 13 provincias con caja propia."},
+];
+
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+const PEN_CARDS = [
+  {key:"p_inv",icon:"♿",monto:"70% haber mín.",title:"Invalidez Laboral",desc:"Incapacidad del 66%+ y situación de vulnerabilidad."},
+  {key:"p_vej",icon:"👴",monto:"70% haber mín.",title:"Pensión por Vejez",desc:"Para personas de 70+ sin cobertura previsional."},
+  {key:"p_mad",icon:"👩‍👧‍👦",monto:"1 haber mín.",title:"Madre de 7 Hijos",desc:"Prestación vitalicia para madres de 7 o más hijos."},
+  {key:"puam",icon:"🌟",monto:"80% haber mín.",title:"PUAM",desc:"Pensión Universal para el Adulto Mayor de 65+."},
+  {key:"p_vih",icon:"🏥",monto:"70% haber mín.",title:"VIH / Hepatitis B y C",desc:"Para personas diagnosticadas en situación de vulnerabilidad."},
+  {key:"p_mal",icon:"🎖️",monto:"Haber especial",title:"Veteranos de Malvinas",desc:"Pensión Honorífica para ex combatientes del Atlántico Sur."},
+  {key:"p_pol",icon:"✊",monto:"Ley 26.913",title:"Ex Presos Políticos",desc:"Detenidos por causas políticas hasta el 10/12/1983."},
+  {key:"p_cov",icon:"🦠",monto:"2 haberes mín.",title:"Familiares COVID-19",desc:"Cónyuges e hijos de trabajadores esenciales fallecidos."},
+];
+
+// ═══════════════════════════════════════════════════
+// RENDER CARDS
+// ═══════════════════════════════════════════════════
+function renderJubCards(){
+  const grid = $('#jub-grid');
+  grid.innerHTML = JUB_CARDS.map(c=>`
+    <div class="jub-card fade-in" onclick="openModal('${c.key}')"
+      onmouseenter="this.style.borderColor='${c.accent}66';this.querySelector('.card-top-line').style.background='linear-gradient(90deg,transparent,${c.accent},transparent)'"
+      onmouseleave="this.style.borderColor='rgba(201,168,76,.08)';this.querySelector('.card-top-line').style.background=''">
+      <div class="card-top-line"></div>
+      <div class="card-icon-box" style="background:${c.accent}18">${c.icon}</div>
+      <div class="card-title">${c.title}</div>
+      <div class="card-desc">${c.desc}</div>
+      <div class="card-link" style="color:${c.accent}">Ver requisitos →</div>
+    </div>
+  `).join('');
+  observeFadeIns();
+}
+
+function renderPenCards(){
+  const grid = $('#pen-grid');
+  grid.innerHTML = PEN_CARDS.map(p=>`
+    <div class="pen-card fade-in" onclick="openModal('${p.key}')">
+      <div class="pen-icon">${p.icon}</div>
+      <div class="pen-title">${p.title}</div>
+      <div class="pen-desc">${p.desc}</div>
+      <span class="pen-badge">${p.monto}</span>
+    </div>
+  `).join('');
+  observeFadeIns();
+}
+
+// ═══════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════
+function switchTab(tab, btn){
+  $$('.tab-btn').forEach(b=>b.classList.remove('active'));
+  $$('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  $(`#panel-${tab}`).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════
+function openModal(key){
+  const d = MODAL_DATA[key]; if(!d) return;
+  const overlay = $('#modalOverlay');
+  const modalTag = $('#modalTag');
+  const modalEmoji = $('#modalEmoji');
+  const modalTitle = $('#modalTitle');
+  const modalTopLine = $('#modalTopLine');
+  const modalBody = $('#modalBody');
+
+  modalTag.textContent = d.tag;
+  modalTag.style.color = d.color;
+  modalEmoji.textContent = d.icon;
+  modalTitle.textContent = d.title;
+  modalTitle.style.background = `linear-gradient(135deg,${d.color},#fff)`;
+  modalTitle.style.webkitBackgroundClip = 'text';
+  modalTitle.style.webkitTextFillColor = 'transparent';
+  modalTopLine.style.background = `linear-gradient(90deg,transparent,${d.color},transparent)`;
+
+  const colors = {reqs:'--accent-gold',docs:'--accent-cyan',legal:'--accent-purple'};
+  const labels = {reqs:'✅ Requisitos',docs:'📎 Documentación',legal:'⚖️ Marco Legal / Monto'};
+
+  modalBody.innerHTML = ['reqs','docs','legal'].map(k=>`
+      <div class="modal-section">
+        <div class="modal-section-label" style="color:var(${colors[k]})">${labels[k]}</div>
+        ${d[k].map(r=>`
+          <div class="modal-item">
+            <span class="modal-diamond" style="color:var(${colors[k]})">◆</span>
+            <span class="modal-item-text">${r}</span>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  const overlay = $('#modalOverlay'); overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function openAargCalculator(e){
+  e.preventDefault();
+  const encodedKey = 'TmlockAyZcORb3M=';
+  const accessKey = decodeURIComponent(escape(atob(encodedKey)));
+  const userKey = prompt('Ingrese la clave de acceso para la calculadora Arg 2026:');
+  if(userKey === null) return;
+  if(userKey.trim() === accessKey){
+    window.open('https://aarg.ar/calculadoras/jubilacion-argentina/?utm_source=chatgpt.com', '_blank');
+    return;
+  }
+  alert('Clave incorrecta. El acceso a la calculadora es exclusivo.');
+}
+
+function handleOverlayClick(e){
+  if(e.target === $('#modalOverlay')) closeModal();
+}
+
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+// ═══════════════════════════════════════════════════
+// NAV SCROLL
+// ═══════════════════════════════════════════════════
+window.addEventListener('scroll',()=>{
+  $('#mainNav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ═══════════════════════════════════════════════════
+// INTERSECTION OBSERVER (fade-in)
+// ═══════════════════════════════════════════════════
+function observeFadeIns(){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
+  },{threshold:.12});
+  document.querySelectorAll('.fade-in:not(.visible)').forEach(el=>obs.observe(el));
+}
+
+// ═══════════════════════════════════════════════════
+// PARTICLES CANVAS
+// ═══════════════════════════════════════════════════
+(function initParticles(){
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  const COLORS = ['#C9A84C','#0ABFBC','#AA64FF','#FF6482','#6478FF'];
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const pts = Array.from({length:55},()=>({
+    x: Math.random()*window.innerWidth,
+    y: Math.random()*window.innerHeight,
+    vx: (Math.random()-.5)*.35,
+    vy: (Math.random()-.5)*.35,
+    r: Math.random()*1.6+.5,
+    col: COLORS[Math.floor(Math.random()*COLORS.length)],
+  }));
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col+'55';
+      ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x,pts[i].y);
+          ctx.lineTo(pts[j].x,pts[j].y);
+          ctx.strokeStyle=`rgba(201,168,76,${.12*(1-d/120)})`;
+          ctx.lineWidth=.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+renderJubCards();
+renderPenCards();
+observeFadeIns();
+</script>
+</body>
+</html>
